@@ -12,10 +12,10 @@
 ### 1. 创建虚拟环境（推荐）
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
+python3 -m venv .venv
+source .venv/bin/activate  # Linux/Mac
 # 或
-venv\Scripts\activate     # Windows
+.venv\Scripts\activate     # Windows
 ```
 
 ### 2. 安装依赖
