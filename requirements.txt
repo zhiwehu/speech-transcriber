@@ -1,19 +1,19 @@
 # Speech Transcriber Dependencies
-# 最小化依赖（CPU 模式，MVP 测试用）
 
 # 核心依赖
-funasr>=1.0.0          # 阿里语音识别
-funasr-runtime>=0.0.1  # FunASR 运行时
+funasr>=1.0.0              # 阿里语音识别
+funasr-runtime>=0.0.1      # FunASR 运行时
 
 # 音频处理
-soundfile>=0.12.0      # 音频读写
-pydub>=0.25.0          # 音频操作
+soundfile>=0.12.0          # 音频读写
+pydub>=0.25.0              # 音频操作
 
 # 配置与工具
-pyyaml>=6.0            # YAML 配置
-tqdm>=4.65.0           # 进度条
-loguru>=0.7.0          # 日志
-numpy>=1.19.3          # 数值计算
+pyyaml>=6.0                # YAML 配置
+tqdm>=4.65.0               # 进度条
+loguru>=0.7.0              # 日志
+numpy>=1.19.3              # 数值计算
+python-dotenv>=1.0.0       # .env 文件支持
 
 # ========== 以下为可选依赖（本地模式需要）==========
 

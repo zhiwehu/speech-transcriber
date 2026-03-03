@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Transcriber - 多说话人语音识别系统</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 { color: #24292e; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 3px; margin-right: 5px; }
+        .badge-success { background: #28a745; color: white; }
+        .badge-info { background: #0366d6; color: white; }
+        code { background: #f6f8fa; padding: 2px 6px; border-radius: 3px; }
+        pre { background: #f6f8fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        a { color: #0366d6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>🎙️ Speech Transcriber</h1>
+    
+    <p>
+        <span class="badge badge-success">MIT License</span>
+        <span class="badge badge-info">Python 3.11+</span>
+    </p>
+    
+    <p><strong>多说话人语音识别系统</strong> - 基于阿里达摩院 FunASR 和 3D-Speaker 技术栈</p>
+    
+    <h2>🚀 快速开始</h2>
+    <pre><code>pip install -r requirements.txt
+python3 run.py -i audio.wav -o result.txt</code></pre>
+    
+    <h2>📦 功能特性</h2>
+    <ul>
+        <li>✅ 语音识别（ASR）- 阿里云 FunASR</li>
+        <li>✅ 说话人分离 - 3D-Speaker</li>
+        <li>✅ 中英文混合识别</li>
+        <li>✅ 在线/本地两种模式</li>
+    </ul>
+    
+    <h2>📖 文档</h2>
+    <p>查看完整文档：<a href="https://github.com/zhiwehu/speech-transcriber">GitHub Repository</a></p>
+    
+    <h2>👤 作者</h2>
+    <p>Jeffrey Hu - <a href="https://github.com/zhiwehu">@zhiwehu</a></p>
+</body>
+</html>

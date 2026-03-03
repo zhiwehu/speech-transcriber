@@ -42,7 +42,9 @@ output/*.json
 .cache/
 modelscope_cache/
 
-# 配置文件（敏感信息）
+# 敏感配置
+.env
+.env.local
 configs/config.local.yaml
 *.local.yaml
 
