@@ -35,9 +35,18 @@ cp .env.example .env
 # 编辑 .env 文件，填入 API Key 等
 ```
 
+**.env 文件内容示例：**
+```bash
+MODE=online
+DASHSCOPE_API_KEY=sk-xxx
+OSS_BUCKET=your-bucket
+OSS_ACCESS_KEY=LTAIxxx
+OSS_ACCESS_SECRET=xxx
+```
+
 **方式 B：编辑配置文件**
 
-编辑 `configs/config.yaml`，或使用环境变量覆盖。
+编辑 `configs/config.yaml` 修改默认配置（不推荐存放敏感信息）。
 
 ### 4. 运行
 
