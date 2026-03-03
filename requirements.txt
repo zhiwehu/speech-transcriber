@@ -1,0 +1,36 @@
+# Speech Transcriber Dependencies
+# 最小化依赖（CPU 模式，MVP 测试用）
+
+# 核心依赖
+funasr>=1.0.0          # 阿里语音识别
+funasr-runtime>=0.0.1  # FunASR 运行时
+
+# 音频处理
+soundfile>=0.12.0      # 音频读写
+pydub>=0.25.0          # 音频操作
+
+# 配置与工具
+pyyaml>=6.0            # YAML 配置
+tqdm>=4.65.0           # 进度条
+loguru>=0.7.0          # 日志
+numpy>=1.19.3          # 数值计算
+
+# ========== 以下为可选依赖（本地模式需要）==========
+
+# 说话人分离（本地模式需要，在线模式不需要）
+# pyannote.audio>=3.1.0
+# torch>=2.0.0
+
+# VAD（本地模式需要）
+# silero-vad>=0.4.0
+
+# 音频分析（高级功能）
+# librosa>=0.10.0
+
+# Intel OpenVINO 优化（Intel CPU/NPU）
+# openvino>=2024.0.0
+# optimum-intel>=1.15.0
+
+# Web 界面
+# gradio>=4.0.0
+# fastapi>=0.104.0

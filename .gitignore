@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 测试输出
+output/*.wav
+output/*.m4a
+output/*.txt
+output/*.json
+!output/.gitkeep
+
+# 模型缓存
+.cache/
+modelscope_cache/
+
+# 配置文件（敏感信息）
+configs/config.local.yaml
+*.local.yaml
+
+# 日志
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

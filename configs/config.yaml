@@ -1,0 +1,68 @@
+# Speech Transcriber Configuration
+# 切换 mode: online 或 local 来使用不同后端
+
+# 运行模式
+mode: online  # online | local
+
+# 在线模式配置（阿里云 FunASR）
+online:
+  # 阿里云 API 配置
+  api_key: "YOUR_DASHSCOPE_API_KEY"  # 替换为你的 API Key
+  endpoint: "https://dashscope.aliyuncs.com/api/v1/services/audio/asr/transcription"
+  
+  # 模型选择
+  asr_model: "fun-asr"  # 中文识别（免费额度：36000 秒）
+  vad_model: "silero_vad"
+  speaker_model: "3d-speaker"
+  
+  # 文件存储（用于上传音频文件）
+  storage:
+    type: "oss"
+    oss_bucket: "YOUR_BUCKET_NAME"  # 替换为你的 OSS Bucket
+    oss_endpoint: "oss-cn-beijing.aliyuncs.com"  # 根据你的 Bucket 地域修改
+    oss_access_key: "YOUR_ACCESS_KEY"  # 替换为你的 OSS AccessKey ID
+    oss_access_secret: "YOUR_ACCESS_SECRET"  # 替换为你的 OSS AccessKey Secret
+  
+  # 说话人分离配置
+  # enable_speaker_diarization: false  # 在线模式不准确，建议禁用
+  # use_pyannote: true  # 使用 pyannote.audio（需要额外安装）
+
+# 本地模式配置
+local:
+  # 设备选择：cpu | cuda | npu
+  device: cpu
+  
+  # 模型路径（HuggingFace/DAMO 模型名）
+  models:
+    # 语音活动检测
+    vad: "damo/speech_fsmn_vad_zh-cn-16k-common-pytorch"
+    
+    # 语音识别（ASR）
+    asr: "damo/speech_paraformer-large-vad-punc-zh-cn-16k-common-zh-cn"
+    
+    # 说话人嵌入（声纹识别）
+    speaker: "damo/speech_campplus_sv_zh-cn_16k-common"
+    
+    # 说话人分离（Diarization）
+    diarization: "pyannote/speaker-diarization-3.1"
+  
+  # 推理参数
+  inference:
+    batch_size: 1
+    num_workers: 2
+    # Intel NPU 优化（OpenVINO）
+    use_openvino: false
+
+# 通用设置
+common:
+  # 采样率
+  sample_rate: 16000
+  
+  # VAD 阈值
+  vad_threshold: 0.5
+  
+  # 说话人分离阈值
+  diarization_threshold: 0.3
+  
+  # 输出格式
+  output_format: "txt"  # txt | json | srt | markdown
