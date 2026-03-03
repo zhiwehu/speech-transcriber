@@ -6,23 +6,27 @@ import os
 import yaml
 from pathlib import Path
 from typing import Dict, Any
-from dotenv import load_dotenv
-
-
-# 加载 .env 文件
-load_dotenv()
+from dotenv import load_dotenv, find_dotenv
 
 
 class Config:
     """配置管理器"""
     
     def __init__(self, config_path: str = None):
+        # 加载 .env 文件（支持查找父目录）
+        env_path = find_dotenv()
+        if env_path:
+            load_dotenv(env_path, override=True)
+        
         if config_path is None:
             config_path = Path(__file__).parent.parent / "configs" / "config.yaml"
         
         self.config_path = Path(config_path)
         self.config: Dict[str, Any] = {}
         self.load()
+
+
+
     
     def load(self):
         """加载配置文件"""

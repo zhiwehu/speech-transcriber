@@ -93,52 +93,63 @@ class ASRProcessor:
             traceback.print_exc()
             return self._get_mock_results()
     
-    def _transcribe_with_url(self, file_url: str, api_key: str) -> List[ASRResult]:
-        """使用文件 URL 进行转录"""
-        try:
-            from dashscope.audio.asr import Transcription
-            import dashscope
-            from http import HTTPStatus
-            
-            dashscope.api_key = api_key
-            dashscope.base_http_api_url = 'https://dashscope.aliyuncs.com/api/v1'
-            
-            print(f"[ASR] 📡 提交任务：{file_url}")
-            
-            # 异步提交任务
-            task_response = Transcription.async_call(
-                model='fun-asr',
-                file_urls=[file_url]
-            )
-            
-            task_id = task_response.output.task_id
-            print(f"[ASR] 🎯 任务 ID: {task_id}")
-            
-            # 同步等待任务完成
-            import time
-            print("[ASR] ⏳ 等待任务完成...")
-            while True:
-                transcribe_response = Transcription.fetch(task=task_id)
-                status = transcribe_response.output.task_status
+    def _transcribe_with_url(self, file_url: str, api_key: str, max_retries: int = 3) -> List[ASRResult]:
+        """使用文件 URL 进行转录（带重试机制）"""
+        import time
+        from dashscope.audio.asr import Transcription
+        import dashscope
+        from http import HTTPStatus
+        
+        dashscope.api_key = api_key
+        dashscope.base_http_api_url = 'https://dashscope.aliyuncs.com/api/v1'
+        
+        for attempt in range(max_retries):
+            try:
+                print(f"[ASR] 📡 提交任务：{file_url} (尝试 {attempt + 1}/{max_retries})")
                 
-                if status == 'SUCCEEDED' or status == 'FAILED':
-                    break
+                # 异步提交任务
+                task_response = Transcription.async_call(
+                    model='fun-asr',
+                    file_urls=[file_url]
+                )
+                
+                task_id = task_response.output.task_id
+                print(f"[ASR] 🎯 任务 ID: {task_id}")
+                
+                # 同步等待任务完成
+                print("[ASR] ⏳ 等待任务完成...")
+                while True:
+                    transcribe_response = Transcription.fetch(task=task_id)
+                    status = transcribe_response.output.task_status
                     
-                print(f"   状态：{status}")
-                time.sleep(2)
-            
-            if transcribe_response.status_code == HTTPStatus.OK:
-                print("[ASR] ✅ 转录完成！")
-                return self._parse_result(transcribe_response.output)
-            else:
-                print(f"[ASR] ❌ 任务失败：{transcribe_response.message}")
-                return self._get_mock_results()
+                    if status == 'SUCCEEDED' or status == 'FAILED':
+                        break
+                        
+                    print(f"   状态：{status}")
+                    time.sleep(2)
                 
-        except Exception as e:
-            print(f"[ASR] 调用失败：{e}")
-            import traceback
-            traceback.print_exc()
-            return self._get_mock_results()
+                if transcribe_response.status_code == HTTPStatus.OK:
+                    print("[ASR] ✅ 转录完成！")
+                    return self._parse_result(transcribe_response.output)
+                else:
+                    print(f"[ASR] ❌ 任务失败：{transcribe_response.message}")
+                    if attempt < max_retries - 1:
+                        print(f"[ASR] 重试中...")
+                        time.sleep(2 ** attempt)  # 指数退避
+                        continue
+                    return self._get_mock_results()
+                    
+            except Exception as e:
+                print(f"[ASR] 调用失败（尝试 {attempt + 1}/{max_retries}）: {e}")
+                if attempt < max_retries - 1:
+                    print(f"[ASR] 重试中...")
+                    time.sleep(2 ** attempt)
+                else:
+                    import traceback
+                    traceback.print_exc()
+                    return self._get_mock_results()
+        
+        return self._get_mock_results()
     
     def _parse_result(self, output) -> List[ASRResult]:
         """解析 API 返回结果"""

@@ -48,11 +48,23 @@ class SpeechTranscriber:
             转录文本
         """
         audio_path = Path(audio_path)
+        
+        # 验证文件存在
         if not audio_path.exists():
             raise FileNotFoundError(f"音频文件不存在：{audio_path}")
         
+        # 验证文件格式
+        supported_formats = {'.wav', '.mp3', '.m4a', '.flac', '.aac', '.ogg', '.wma', '.amr'}
+        if audio_path.suffix.lower() not in supported_formats:
+            raise ValueError(f"不支持的音频格式：{audio_path.suffix}，支持的格式：{', '.join(supported_formats)}")
+        
+        # 验证文件大小（不超过 2GB）
+        file_size_mb = audio_path.stat().st_size / 1024 / 1024
+        if file_size_mb > 2048:
+            raise ValueError(f"文件过大：{file_size_mb:.2f}MB，最大支持 2GB")
+        
         print(f"\n📁 处理文件：{audio_path}")
-        print(f"   大小：{audio_path.stat().st_size / 1024 / 1024:.2f} MB")
+        print(f"   大小：{file_size_mb:.2f} MB")
         
         # Step 1: VAD 语音活动检测
         print("\n[1/3] 🔍 语音活动检测...")

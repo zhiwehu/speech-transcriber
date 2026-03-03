@@ -33,7 +33,7 @@ class OSSUploader:
             self.auth = oss2.Auth(self.access_key, self.access_secret)
             self.bucket = oss2.Bucket(self.auth, self.endpoint, self.bucket_name)
     
-    def upload(self, file_path: str, object_name: Optional[str] = None, use_signed_url: bool = True) -> str:
+    def upload(self, file_path: str, object_name: Optional[str] = None, use_signed_url: bool = True, expire_seconds: int = 86400) -> str:
         """
         上传文件到 OSS
         
@@ -41,6 +41,7 @@ class OSSUploader:
             file_path: 本地文件路径
             object_name: OSS 对象名称（可选，默认使用文件名）
             use_signed_url: 是否使用签名 URL（推荐，用于私有 Bucket）
+            expire_seconds: 签名 URL 过期时间（秒），默认 24 小时
             
         Returns:
             文件公网 URL
@@ -65,9 +66,9 @@ class OSSUploader:
             print(f"[OSS] ✅ 上传成功")
             
             if use_signed_url:
-                # 生成签名 URL（有效期 24 小时）
-                url = self.bucket.sign_url('GET', object_name, 86400)  # 86400 秒 = 24 小时
-                print(f"[OSS] 🔐 签名 URL（24 小时有效）: {url}")
+                # 生成签名 URL
+                url = self.bucket.sign_url('GET', object_name, expire_seconds)
+                print(f"[OSS] 🔐 签名 URL（{expire_seconds//3600}小时有效）: {url}")
             else:
                 # 普通公网 URL（需要 Bucket 是公共读）
                 url = f"https://{self.bucket_name}.{self.endpoint}/{object_name}"
